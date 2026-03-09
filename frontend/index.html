@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestor de gastos</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
+    <link rel="stylesheet" href="resources/css/styles.css" />
+  </head>
+  <body>
+    <h1>Mi aplicacion para gastos</h1>
+
+    <div class="row">
+
+      <!--TABLA-->
+      <div class="col l5 offset-l1 s12">
+        <h5>Historial de transacciones</h5>
+        <div class="tableFormat">
+          <table id="transactionTable">
+            <tr>
+              <th>Tipo</th>
+              <th>Descripcion</th>
+              <th>Monto</th>
+              <th>Categoria</th>
+              <th>Eliminar</th>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+
+
+
+      <!--FORMULARIO-->
+      <div class="col l5 s12">
+        <div class="col s8 offset-s2">
+        <h5>Agregar nueva transacción</h5>
+        <form id="transactionForm">
+          <div>
+            <div class="claseFormulario">
+              Tipo de transaccion:
+              <p>
+                <label>
+                  <input
+                  value="Ingreso"
+                    class="with-gap"
+                    name="transactionType"
+                    type="radio"
+                    checked
+                  />
+                  <span>Ingreso</span>
+                </label>
+
+                <label>
+                  <input
+                  value="Egreso"
+                    class="with-gap"
+                    name="transactionType"
+                    type="radio"
+                    checked
+                  />
+                  <span>Egreso</span>
+                </label>
+              </p>
+            </div>
+
+            <div class="input-field">
+              <input
+                id="transactionDescription"
+                name="transactionDescription"
+                type="text"
+                class="validate"
+              />
+              <label for="transactionDescription">Descripción</label>
+            </div>
+
+            <div class="input-field">
+              <input
+                id="transactionAmount"
+                name="transactionAmount"
+                type="number"
+                class="validate"
+              />
+              <label for="transactionAmount">Monto</label>
+            </div>
+
+            <div class="claseFormulario">
+              <label for="transactionCategory">Categoria</label>
+              <select
+                class="browser-default"
+                id="transactionCategory"
+                name="transactionCategory">
+              </select>
+            </div>
+
+            <div class="claseFormulario">
+              <br />
+              <button class="waves-effect waves-light btn-small" id="botonDeEnvio" type="submit">Añadir</button>
+            </div>
+          </div>
+          </div>
+        </form>
+      </div>
+
+      
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="resources/js/scripts.js"></script>
+  </body>
+</html>

@@ -1,0 +1,22 @@
+      .tableFormat table {
+        margin: 10px auto;
+      }
+      td,
+      th {
+        text-align: center;
+        padding: 7px 15px;
+        border: solid 1px;
+      }
+      h1 {
+        text-align: center;
+      }
+
+      form {
+        text-align: center;
+      }
+
+  
+
+      #botonDeEnvio {
+        font-size: 15px;
+      }
