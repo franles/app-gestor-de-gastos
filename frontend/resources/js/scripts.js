@@ -1,19 +1,19 @@
 const form = document.getElementById("transactionForm");
 
 //EVENTO PARA ENVIAR EL FORMULARIO
-form.addEventListener("submit", function (event) {
+form.addEventListener("submit", async function (event) {
   //submit es el evento que se dispara cuando se hace click en el boton de envio del formulario
   event.preventDefault();
   let transactionFormData = new FormData(form);
   let transactionObj = convertFormDataToTransactionObjet(transactionFormData);
   if (form.transactionAmount.value >= 0) {
-    saveTransactionObj(transactionObj);
+    await saveTransactionObj(transactionObj); // espera a que la API confirme que guardo la transaccion
     insertRowInTransactionTable(transactionObj); //inserta una nueva fila en la tabla con los datos de la transaccion que se acaba de agregar
     form.reset(); //limpia el formulario despues de enviar los datos, para que quede listo para una nueva transaccion
   } else {
     alert("El monto debe ser mayor a 0");
   }
-});
+})
 
 //DRAW CATEGORY OPTIONS
 function draw_category(params) {
@@ -39,22 +39,21 @@ function insertCategory(categoryName) {
 }
 
 //EVENTO PARA CARGAR LAS TRANSACCIONES GUARDADAS EN EL LOCAL STORAGE CUANDO SE CARGA EL DOM
-document.addEventListener("DOMContentLoaded", function () {
-  draw_category(); //cargar las categorias
+document.addEventListener("DOMContentLoaded", async function () {
+  draw_category();//cargar las categorias
   //obtiene del localstorage la info de las transactions
-  let transactionObjArr = getTransactionsFromApi();
+  let transactionObjArr = await getTransactionsFromApi();
   console.log("Parseado:", transactionObjArr);
-    transactionObjArr.forEach(
-      function (arrayElement) {
-        insertRowInTransactionTable(arrayElement);
-    });
+  transactionObjArr.forEach(function (arrayElement) {
+    insertRowInTransactionTable(arrayElement);
+  });
 });
 
-function getTransactionsFromApi() {
-  //llama al backend
-  //Obtiene las transactions
-  //las guarda en un array
-  const allTransactions = fetch("http://localhost:3000/transactions");
+
+
+async function getTransactionsFromApi() {
+  const response = await fetch("http://localhost:3000/transactions");
+  const allTransactions = await response.json();
   return allTransactions;
 }
 
@@ -151,14 +150,14 @@ function deleteTransactionObj(transactionId) {
   localStorage.setItem("transactionData", JSON.stringify(transactionObjArr));
 }
 
-//esta funcion se encarga de guardar la transaccion en el local storage, recibiendo un objeto con los datos de la transaccion a guardar
-function saveTransactionObj(transactionObj) {
-  //esta funcion se encarga de guardar la transaccion en el local storage, recibiendo un objeto con los datos de la transaccion a guardar
-  let myTransactionArray = JSON.parse(localStorage.getItem("transactionData")) || [];
-  myTransactionArray.push(transactionObj);
-  //convierto mi array de transaccion a JSON
-  let transactionArrayJSON = JSON.stringify(myTransactionArray);
-  //guardo mi array de transaccion en formato JSON en el local storage
-  localStorage.setItem("transactionData", transactionArrayJSON);
+// esta funcion se encarga de enviar la transaccion al backend via POST
+async function saveTransactionObj(transactionObj) {
+  const response = await fetch("http://localhost:3000/transactions", {
+    method: "POST",                          // tipo de request: POST
+    headers: { "Content-Type": "application/json" }, // le avisamos al backend que mandamos JSON
+    body: JSON.stringify(transactionObj)     // convertimos el objeto a JSON para mandarlo
+  });
+  const result = await response.text();
+  console.log("Respuesta del backend:", result); // deberia mostrar "Transaccion agregada"
 }
 

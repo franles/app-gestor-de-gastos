@@ -3,6 +3,7 @@ const cors = require('cors');
 
 const app = express() 
 app.use(cors());
+app.use(express.json()); // permite leer el body JSON que manda el frontend
 
 const port = 3000  
 
@@ -41,13 +42,12 @@ app.get('/transactions/:id', (req, res) => {
   res.send(selectedTransaction);
 })
 
+
 app.post('/transactions', (req, res) => {
   // obteneme la transaccion que viene en la request
-  // guardala en una variable llamada transaction
-  const transacion = "aca va la transaccion que me vino";
-   transactions.push(transaction); // guardala en el array global
-   res.send("Transaccion agregada"); // respondeme que fue hecho
-
+  const transaction = req.body; // aca llega el JSON que manda el frontend
+  transactions.push(transaction); // guardala en el array global
+  res.send("Transaccion agregada"); // respondeme que fue hecho
 })
 
 
